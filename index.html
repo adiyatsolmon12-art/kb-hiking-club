@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KB Hiking Club</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #7ac943;
+        }
+
+        /* HERO */
+
+        .hero {
+            height: 650px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.45),
+                    rgba(0,0,0,0.55)
+                ),
+                url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b")
+                center/cover;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 70px;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 22px;
+            margin-bottom: 35px;
+        }
+
+        .button {
+            display: inline-block;
+
+            background: #7ac943;
+            color: white;
+
+            padding: 16px 35px;
+
+            border-radius: 5px;
+
+            text-decoration: none;
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background: #5da52d;
+            transform: translateY(-2px);
+        }
+
+        /* EVENTS */
+
+        .section {
+            padding: 70px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #777;
+        }
+
+        .events {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 25px;
+        }
+
+        .event-card {
+            background: white;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .event-image {
+            height: 200px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.15),
+                    rgba(0,0,0,0.25)
+                ),
+                url("https://images.unsplash.com/photo-1551632811-561732d1e306")
+                center/cover;
+        }
+
+        .event-content {
+            padding: 25px;
+        }
+
+        .event-content h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .event-content p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* ABOUT */
+
+        .about {
+            background: #111;
+            color: white;
+
+            padding: 80px 15%;
+
+            text-align: center;
+        }
+
+        .about h2 {
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #050505;
+            color: #aaa;
+
+            text-align: center;
+
+            padding: 30px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+                font-size: 13px;
+            }
+
+            .hero {
+                height: 550px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section {
+                padding: 50px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            KB HIKING CLUB
+        </div>
+
+        <nav>
+            <a href="#">Нүүр</a>
+            <a href="#">Аялал</a>
+            <a href="#">Гишүүд</a>
+            <a href="#">Амжилт</a>
+            <a href="#">Холбоо барих</a>
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>KB HIKING CLUB</h1>
+
+            <p>
+                АЯЛАЛ • АВИРАЛТ • АДАЛ ЯВДАЛ
+            </p>
+
+            <a href="register.html" class="button">
+                ГИШҮҮН БОЛОХ
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- EVENTS -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <h2>УДАХГҮЙ БОЛОХ АРГА ХЭМЖЭЭ</h2>
+
+            <p>
+                KB Hiking Club-ийн дараагийн аялал, авиралтууд
+            </p>
+
+        </div>
+
+
+        <div class="events">
+
+
+            <div class="event-card">
+
+                <div class="event-image"></div>
+
+                <div class="event-content">
+
+                    <h3>Хадны авиралт</h3>
+
+                    <p>📅 2026.09.26</p>
+
+                    <p>🏔️ Улаанбаатар</p>
+
+                    <p>👥 Хязгаарлагдмал тоотой</p>
+
+                    <a href="#" class="button">
+                        Бүртгүүлэх
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="event-card">
+
+                <div class="event-image"></div>
+
+                <div class="event-content">
+
+                    <h3>KB Club Meetup</h3>
+
+                    <p>📅 2026.10.03–04</p>
+
+                    <p>📍 Улаанбаатар</p>
+
+                    <p>👥 KB Hiking Club</p>
+
+                    <a href="#" class="button">
+                        Дэлгэрэнгүй
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="event-card">
+
+                <div class="event-image"></div>
+
+                <div class="event-content">
+
+                    <h3>Сүхбаатар аялал</h3>
+
+                    <p>📅 2026.10.10–11</p>
+
+                    <p>📍 Сүхбаатар аймаг</p>
+
+                    <p>🚌 Нэгдсэн унаатай</p>
+
+                    <a href="#" class="button">
+                        Бүртгүүлэх
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section class="about">
+
+        <h2>KB HIKING CLUB</h2>
+
+        <p>
+            KB Hiking Club нь уулын аялал, өндөр уулын авиралт,
+            хадны авиралт, trail running болон адал явдалт
+            үйл ажиллагааг хамтдаа хөгжүүлдэг клуб юм.
+        </p>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 KB HIKING CLUB
+
+    </footer>
+
+
+</body>
+</html>

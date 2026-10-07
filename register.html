@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="mn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Гишүүний бүртгэл | KB Hiking Club</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f2;
+            color: #222;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .page {
+            min-height: calc(100vh - 75px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 50px 20px;
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 600px;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-box h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #7ac943;
+        }
+
+        .submit-button {
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #7ac943;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #5da52d;
+        }
+
+        .submit-button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .required {
+            color: red;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+                font-size: 13px;
+            }
+
+            .form-box {
+                padding: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            KB HIKING CLUB
+        </div>
+
+        <nav>
+            <a href="index.html">Нүүр</a>
+        </nav>
+
+    </header>
+
+
+    <!-- REGISTRATION FORM -->
+
+    <div class="page">
+
+        <div class="form-box">
+
+            <h1>
+                Гишүүний бүртгэл
+            </h1>
+
+            <p class="description">
+                KB Hiking Club-ийн нэгдсэн гишүүний бүртгэл
+            </p>
+
+
+            <form id="memberForm">
+
+
+                <!-- ОВОГ -->
+
+                <div class="form-group">
+
+                    <label>
+                        Овог
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="last_name"
+                        name="last_name"
+                        type="text"
+                        placeholder="Овог"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- НЭР -->
+
+                <div class="form-group">
+
+                    <label>
+                        Нэр
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="first_name"
+                        name="first_name"
+                        type="text"
+                        placeholder="Нэр"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- НАС -->
+
+                <div class="form-group">
+
+                    <label>
+                        Нас
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="age"
+                        name="age"
+                        type="number"
+                        min="1"
+                        max="100"
+                        placeholder="Нас"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ХҮЙС -->
+
+                <div class="form-group">
+
+                    <label>
+                        Хүйс
+                        <span class="required">*</span>
+                    </label>
+
+                    <select
+                        id="gender"
+                        name="gender"
+                        required
+                    >
+
+                        <option value="">
+                            Сонгоно уу
+                        </option>
+
+                        <option value="male">
+                            Эрэгтэй
+                        </option>
+
+                        <option value="female">
+                            Эмэгтэй
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- УТАС -->
+
+                <div class="form-group">
+
+                    <label>
+                        Утасны дугаар
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="99112233"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SUBMIT BUTTON -->
+
+                <button
+                    id="submitButton"
+                    type="submit"
+                    class="submit-button"
+                >
+                    ГИШҮҮНЭЭР БҮРТГҮҮЛЭХ
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUPABASE LIBRARY -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- SUPABASE CONNECTION -->
+
+    <script>
+
+        const SUPABASE_URL =
+            'https://xjytxvojwvnfanlfozii.supabase.co';
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            'sb_publishable_XbkvSi4P4m45JAg3Sp_oBQ_Ym1nUYKe';
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        const form =
+            document.getElementById('memberForm');
+
+        const submitButton =
+            document.getElementById('submitButton');
+
+
+        form.addEventListener(
+            'submit',
+            async function (event) {
+
+                event.preventDefault();
+
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    'БҮРТГЭЖ БАЙНА...';
+
+
+                const lastName =
+                    document
+                        .getElementById('last_name')
+                        .value
+                        .trim();
+
+
+                const firstName =
+                    document
+                        .getElementById('first_name')
+                        .value
+                        .trim();
+
+
+                const age =
+                    Number(
+                        document
+                            .getElementById('age')
+                            .value
+                    );
+
+
+                const gender =
+                    document
+                        .getElementById('gender')
+                        .value;
+
+
+                const phone =
+                    document
+                        .getElementById('phone')
+                        .value
+                        .trim();
+
+
+                console.log('Бүртгэл илгээж байна...');
+
+
+                try {
+
+                    const { error } =
+                        await supabaseClient
+                            .from('members')
+                            .insert([
+                                {
+
+                                    Last_name: lastName,
+
+                                    First_name: firstName,
+
+                                    Age: age,
+
+                                    Gender: gender,
+
+                                    Phone: phone
+
+                                }
+                            ]);
+
+
+                    if (error) {
+
+                        console.error(
+                            'Supabase error:',
+                            error
+                        );
+
+                        alert(
+                            'Бүртгэл хадгалахад алдаа гарлаа.\n\n' +
+                            error.message
+                        );
+
+                        return;
+                    }
+
+
+                    console.log(
+                        'Бүртгэл амжилттай хадгалагдлаа.'
+                    );
+
+
+                    alert(
+                        '🎉 Баяр хүргэе!\n\n' +
+                        'Таны KB Hiking Club-ийн гишүүний бүртгэл амжилттай хадгалагдлаа.'
+                    );
+
+
+                    form.reset();
+
+                }
+
+
+                catch (error) {
+
+                    console.error(
+                        'Connection error:',
+                        error
+                    );
+
+                    alert(
+                        'Supabase сервертэй холбогдоход алдаа гарлаа.\n\n' +
+                        error.message
+                    );
+
+                }
+
+
+                finally {
+
+                    submitButton.disabled = false;
+
+                    submitButton.textContent =
+                        'ГИШҮҮНЭЭР БҮРТГҮҮЛЭХ';
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
