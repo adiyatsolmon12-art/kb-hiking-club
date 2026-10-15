@@ -308,6 +308,40 @@
                     >
 
                 </div>
+                
+<!-- ИМЭЙЛ -->
+<div class="form-group">
+    <label>
+        Имэйл хаяг <span class="required">*</span>
+    </label>
+
+    <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="example@gmail.com"
+        required
+    >
+</div>
+
+
+<!-- КУРТИКНИЙ РАЗМЕР -->
+<div class="form-group">
+    <label for="jacket_size">
+        Куртикний размер <span class="required">*</span>
+    </label>
+
+    <select id="jacket_size" name="jacket_size" required>
+        <option value="">Размер сонгоно уу</option>
+        <option value="XS">XS</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="2XL">2XL</option>
+        <option value="3XL">3XL</option>
+    </select>
+</div>
 
 
                 <!-- SUBMIT BUTTON -->
@@ -406,6 +440,14 @@
                         .trim();
 
 
+const email =
+    document.getElementById('email')
+        .value.trim();
+
+const jacketSize =
+    document.getElementById('jacket_size')
+        .value;
+
                 console.log('Бүртгэл илгээж байна...');
 
 
@@ -425,7 +467,9 @@
 
                                     Gender: gender,
 
-                                    Phone: phone
+                                    Phone: phone,
+                                    Email: email,
+                                    Jacket_size: jacketSize
 
                                 }
                             ]);
