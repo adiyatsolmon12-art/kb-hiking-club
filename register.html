@@ -486,7 +486,7 @@ if (photoFile.size > 2 * 1024 * 1024) {
 
 
                 try {
-                    const photoPath = `${Date.now()}_${photoFile.name}`;
+                    const photoPath = `registration-photos/${Date.now()}_${photoFile.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
 
 const { error: uploadError } = await supabaseClient
   .storage
