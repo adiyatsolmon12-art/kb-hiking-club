@@ -156,10 +156,9 @@
         });
 
         if (error) {
-          showMessage("Нэвтрэхэд алдаа гарлаа: " + error.message);
-          return;
-        }
-
+  alert("Нэвтрэхэд алдаа гарлаа: " + error.message);
+  return;
+}
         showLoggedIn(true);
         await loadRequests();
       });
