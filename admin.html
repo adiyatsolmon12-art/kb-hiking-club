@@ -97,6 +97,34 @@
     </div>
   </div>
 
+    <h2>Гишүүдийн жагсаалт</h2>
+    <div class="box">
+      <input
+        id="memberSearch"
+        type="text"
+        placeholder="Нэр, овог, утас эсвэл имэйлээр хайх..."
+      >
+      <button id="loadMembersBtn" class="primary">
+        Гишүүд харах
+      </button>
+      <p id="memberMessage"></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Овог</th>
+              <th>Нэр</th>
+              <th>Нас</th>
+              <th>Хүйс</th>
+              <th>Утас</th>
+              <th>Имэйл</th>
+              <th>Хүрэмний размер</th>
+            </tr>
+          </thead>
+          <tbody id="memberList"></tbody>
+        </table>
+      </div>
+    </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL =
@@ -263,6 +291,66 @@
         showLoggedIn(false);
       }
     }
+
+    async function loadMembers() {
+      const memberMessage = document.getElementById("memberMessage");
+      const memberList = document.getElementById("memberList");
+      const search = document.getElementById("memberSearch").value
+        .trim().toLowerCase();
+
+      memberMessage.textContent = "Гишүүдийн мэдээлэл уншиж байна...";
+      memberList.replaceChildren();
+
+      const { data, error } = await db
+        .from("members")
+        .select('*')
+        .order("Last_name", { ascending: true });
+
+      if (error) {
+        memberMessage.textContent =
+          "Мэдээлэл уншиж чадсангүй: " + error.message;
+        return;
+      }
+
+      const filtered = (data || []).filter(member => {
+        const text = [
+          member.Last_name,
+          member.First_name,
+          member.Phone,
+          member.Email
+        ].join(" ").toLowerCase();
+
+        return text.includes(search);
+      });
+
+      filtered.forEach(member => {
+        const tr = document.createElement("tr");
+
+        [
+          member.Last_name,
+          member.First_name,
+          member.Age,
+          member.Gender,
+          member.Phone,
+          member.Email,
+          member.Jacket_size
+        ].forEach(value => {
+          const td = document.createElement("td");
+          td.textContent = value ?? "";
+          tr.appendChild(td);
+        });
+
+        memberList.appendChild(tr);
+      });
+
+      memberMessage.textContent = "Нийт гишүүн: " + filtered.length;
+    }
+
+    document.getElementById("loadMembersBtn")
+      .addEventListener("click", loadMembers);
+
+    document.getElementById("memberSearch")
+      .addEventListener("input", loadMembers);
 
     init();
   </script>
