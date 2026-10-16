@@ -141,7 +141,28 @@
     const loginBox = document.getElementById("loginBox");
     const adminBox = document.getElementById("adminBox");
     const message = document.getElementById("message");
-    const requestList = document.getElementById("requestList");
+    
+    document.getElementById("loginForm")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+        showMessage("Нэвтэрч байна...");
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const { error } = await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) {
+          showMessage("Нэвтрэхэд алдаа гарлаа: " + error.message);
+          return;
+        }
+
+        showLoggedIn(true);
+        await loadRequests();
+      });
 
     function showMessage(text) {
       message.textContent = text;
