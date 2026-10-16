@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="mn">
 <head>
@@ -7,49 +8,263 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 30px auto;
       padding: 20px;
       background: #f4f6f5;
       color: #222;
     }
     h1 { color: #174d37; }
-    .notice {
+    .box {
       background: white;
-      padding: 16px;
+      padding: 20px;
       border-radius: 10px;
-      margin-bottom: 20px;
+      margin: 16px 0;
     }
+    input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 3px;
+    }
+    .primary { background: #174d37; color: white; }
+    .approve { background: #167447; color: white; }
+    .reject { background: #b42318; color: white; }
+    .hidden { display: none; }
+    .message { white-space: pre-wrap; }
+    .table-wrap { overflow-x: auto; }
     table {
       width: 100%;
       border-collapse: collapse;
       background: white;
     }
     th, td {
-      padding: 12px;
+      padding: 10px;
       border-bottom: 1px solid #ddd;
       text-align: left;
     }
-    button {
-      padding: 8px 12px;
-      border: 0;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 2px;
-    }
-    .approve { background: #167447; color: white; }
-    .reject { background: #b42318; color: white; }
   </style>
 </head>
 <body>
   <h1>KB HIKING CLUB</h1>
   <h2>Гишүүн элсүүлэх хүсэлтүүд</h2>
 
-  <div class="notice">
-    Энэ хуудас гишүүний хүсэлтийг харах, зөвшөөрөх,
-    эсвэл татгалзахад зориулагдсан.
+  <div id="loginBox" class="box">
+    <h3>Админ нэвтрэх</h3>
+    <form id="loginForm">
+      <input id="email" type="email"
+        placeholder="Админ имэйл" required>
+      <input id="password" type="password"
+        placeholder="Нууц үг" required>
+      <button class="primary" type="submit">Нэвтрэх</button>
+    </form>
   </div>
 
-  <p>Удирдлагын хүсэлтийн жагсаалтыг дараагийн алхмаар холбоно.</p>
+  <div id="adminBox" class="hidden">
+    <div class="box">
+      <span>Админ эрхээр нэвтэрсэн байна.</span>
+      <button id="refreshBtn">Шинэчлэх</button>
+      <button id="logoutBtn">Гарах</button>
+    </div>
+
+    <p id="message" class="message"></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Огноо</th>
+            <th>Овог</th>
+            <th>Нэр</th>
+            <th>Утас</th>
+            <th>Имэйл</th>
+            <th>Төлөв</th>
+            <th>Үйлдэл</th>
+          </tr>
+        </thead>
+        <tbody id="requestList"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL =
+      "https://xjytxvojwvnfanlfozii.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_XbkvSi4P4m45JAg3Sp_oBQ_Ym1nUYKe";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const loginBox = document.getElementById("loginBox");
+    const adminBox = document.getElementById("adminBox");
+    const message = document.getElementById("message");
+    const requestList = document.getElementById("requestList");
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+    function showLoggedIn(isLoggedIn) {
+      loginBox.classList.toggle("hidden", isLoggedIn);
+      adminBox.classList.toggle("hidden", !isLoggedIn);
+    }
+
+    async function loadRequests() {
+      requestList.replaceChildren();
+      showMessage("Хүсэлтүүдийг уншиж байна...");
+
+      const { data, error } = await db
+        .from("registration_requests")
+        .select('*')
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        showMessage(
+          "Хүсэлт уншиж чадсангүй: " + error.message
+        );
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        showMessage("Одоогоор хүсэлт алга.");
+        return;
+      }
+
+      showMessage("Нийт хүсэлт: " + data.length);
+
+      data.forEach((item) => {
+        const tr = document.createElement("tr");
+
+        const values = [
+          item.created_at
+            ? new Date(item.created_at).toLocaleDateString("mn-MN")
+            : "",
+          item.Last_name,
+          item.First_name,
+          item.Phone,
+          item.Email,
+          item.status
+        ];
+
+        values.forEach((value) => {
+          const td = document.createElement("td");
+          td.textContent = value ?? "";
+          tr.appendChild(td);
+        });
+
+        const actionCell = document.createElement("td");
+
+        if (item.status === "pending") {
+          const approveBtn = document.createElement("button");
+          approveBtn.className = "approve";
+          approveBtn.textContent = "Зөвшөөрөх";
+          approveBtn.addEventListener("click", () => {
+            updateStatus(item.id, "approved");
+          });
+
+          const rejectBtn = document.createElement("button");
+          rejectBtn.className = "reject";
+          rejectBtn.textContent = "Татгалзах";
+          rejectBtn.addEventListener("click", () => {
+            updateStatus(item.id, "rejected");
+          });
+
+          actionCell.append(approveBtn, rejectBtn);
+        } else {
+          actionCell.textContent = "Шийдвэрлэсэн";
+        }
+
+        tr.appendChild(actionCell);
+        requestList.appendChild(tr);
+      });
+    }
+
+    async function updateStatus(id, status) {
+      const action = status === "approved"
+        ? "зөвшөөрөх"
+        : "татгалзах";
+
+      if (!confirm("Энэ хүсэлтийг " + action + " үү?")) {
+        return;
+      }
+
+      showMessage("Төлөв шинэчилж байна...");
+
+      const { error } = await db
+        .from("registration_requests")
+        .update({ status })
+        .eq("id", id)
+        .eq("status", "pending");
+
+      if (error) {
+        showMessage("Алдаа: " + error.message);
+        return;
+      }
+
+      showMessage("Хүсэлтийн төлөв шинэчлэгдлээ.");
+      await loadRequests();
+    }
+
+    document.getElementById("loginForm")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+        showMessage("Нэвтэрч байна...");
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const { error } = await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) {
+          showMessage("Нэвтрэхэд алдаа гарлаа: " + error.message);
+          return;
+        }
+
+        showLoggedIn(true);
+        await loadRequests();
+      });
+
+    document.getElementById("refreshBtn")
+      .addEventListener("click", loadRequests);
+
+    document.getElementById("logoutBtn")
+      .addEventListener("click", async () => {
+        await db.auth.signOut();
+        showLoggedIn(false);
+        requestList.replaceChildren();
+        showMessage("Та системээс гарлаа.");
+      });
+
+    async function init() {
+      const { data } = await db.auth.getSession();
+
+      if (data.session) {
+        showLoggedIn(true);
+        await loadRequests();
+      } else {
+        showLoggedIn(false);
+      }
+    }
+
+    init();
+  </script>
 </body>
 </html>
