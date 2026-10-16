@@ -236,6 +236,30 @@
                 </div>
 
 
+<!-- Гишүүний зураг -->
+<div class="form-group">
+  <label for="member_photo">
+    Гишүүний цээж зураг
+    <span class="required">*</span>
+  </label>
+
+  <input
+    id="member_photo"
+    name="member_photo"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    required
+  >
+
+  <img
+    id="photo_preview"
+    alt="Сонгосон зургийн урьдчилсан харагдац"
+    style="display:none; width:140px; height:160px; object-fit:cover; margin-top:12px; border-radius:8px;"
+  >
+
+  <small>JPG, PNG эсвэл WebP зураг сонгоно уу. 2 MB-аас ихгүй байна.</small>
+</div>
+
                 <!-- НАС -->
 
                 <div class="form-group">
@@ -531,6 +555,33 @@ const jacketSize =
 
             }
         );
+
+const photoInput = document.getElementById("member_photo");
+const photoPreview = document.getElementById("photo_preview");
+
+photoInput.addEventListener("change", () => {
+  const file = photoInput.files[0];
+
+  photoPreview.style.display = "none";
+  photoPreview.removeAttribute("src");
+
+  if (!file) return;
+
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    alert("JPG, PNG эсвэл WebP зураг сонгоно уу.");
+    photoInput.value = "";
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Зургийн хэмжээ 2 MB-аас ихгүй байна.");
+    photoInput.value = "";
+    return;
+  }
+
+  photoPreview.src = URL.createObjectURL(file);
+  photoPreview.style.display = "block";
+});
 
     </script>
 
