@@ -471,11 +471,32 @@ const email =
 const jacketSize =
     document.getElementById('jacket_size')
         .value;
+const photoFile = document.getElementById('member_photo').files[0];
 
+if (!photoFile) {
+  alert('Гишүүний цээж зургаа сонгоно уу.');
+  return;
+}
+
+if (photoFile.size > 2 * 1024 * 1024) {
+  alert('Зургийн хэмжээ 2 MB-аас бага байх ёстой.');
+  return;
+}
                 console.log('Бүртгэл илгээж байна...');
 
 
                 try {
+                    const photoPath = `${Date.now()}_${photoFile.name}`;
+
+const { error: uploadError } = await supabaseClient
+  .storage
+  .from('member photos')
+  .upload(photoPath, photoFile);
+
+if (uploadError) {
+  alert('Зураг хадгалахад алдаа гарлаа: ' + uploadError.message);
+  return;
+}
 
                     const { error } =
                         await supabaseClient
@@ -493,7 +514,8 @@ const jacketSize =
 
                                     Phone: phone,
                                     Email: email,
-                                    Jacket_size: jacketSize
+                                    Jacket_size: jacketSize,
+                                    photo_path: photoPath
 
                                 }
                             ]);
