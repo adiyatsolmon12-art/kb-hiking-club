@@ -221,9 +221,6 @@
         requestList.appendChild(tr);
       });
     }
-
-   
-
 async function updateStatus(id, status) {
   const action = status === "approved"
     ? "зөвшөөрөх"
@@ -236,49 +233,39 @@ async function updateStatus(id, status) {
   showMessage("Боловсруулж байна...");
 
   if (status === "approved") {
-    showMessage(
-      "Гишүүн нэмэх серверийн үйлдлийг тохируулах шаардлагатай байна."
+    const { data, error } = await db.rpc(
+      "approve_registration_request",
+      { p_request_id: id }
     );
-    return;
-  }
 
-  const { error } = await db
-    .from("registration_requests")
-    .update({ status: "rejected" })
-    .eq("id", id)
-    .eq("status", "pending");
-
-  if (error) {
-    showMessage("Алдаа: " + error.message);
-    return;
-  }
-
-  showMessage("Хүсэлтээс татгалзлаа.");
-  await loadRequests();
+    if (error) {
+      showMessage("Гишүүн нэмэхэд алдаа гарлаа: " + error.message);
+      return;
     }
 
-    document.getElementById("loginForm")
-      .addEventListener("submit", async (event) => {
-        event.preventDefault();
-        showMessage("Нэвтэрч байна...");
+    if (!data?.success) {
+      showMessage("Гишүүн нэмэх үйлдэл амжилтгүй боллоо.");
+      return;
+    }
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    showMessage("Гишүүн амжилттай бүртгэгдлээ.");
+  } else {
+    const { error } = await db
+      .from("registration_requests")
+      .update({ status: "rejected" })
+      .eq("id", id)
+      .eq("status", "pending");
 
-        const { error } = await db.auth.signInWithPassword({
-          email,
-          password
-        });
+    if (error) {
+      showMessage("Татгалзахад алдаа гарлаа: " + error.message);
+      return;
+    }
 
-        if (error) {
-          showMessage("Нэвтрэхэд алдаа гарлаа: " + error.message);
-          return;
-        }
+    showMessage("Хүсэлтээс татгалзлаа.");
+  }
 
-        showLoggedIn(true);
-        await loadRequests();
-      });
-
+  await loadRequests();
+}
     document.getElementById("refreshBtn")
       .addEventListener("click", loadRequests);
 
