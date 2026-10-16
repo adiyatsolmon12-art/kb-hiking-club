@@ -222,30 +222,39 @@
       });
     }
 
-    async function updateStatus(id, status) {
-      const action = status === "approved"
-        ? "зөвшөөрөх"
-        : "татгалзах";
+   
 
-      if (!confirm("Энэ хүсэлтийг " + action + " үү?")) {
-        return;
-      }
+async function updateStatus(id, status) {
+  const action = status === "approved"
+    ? "зөвшөөрөх"
+    : "татгалзах";
 
-      showMessage("Төлөв шинэчилж байна...");
+  if (!confirm("Энэ хүсэлтийг " + action + " үү?")) {
+    return;
+  }
 
-      const { error } = await db
-        .from("registration_requests")
-        .update({ status })
-        .eq("id", id)
-        .eq("status", "pending");
+  showMessage("Боловсруулж байна...");
 
-      if (error) {
-        showMessage("Алдаа: " + error.message);
-        return;
-      }
+  if (status === "approved") {
+    showMessage(
+      "Гишүүн нэмэх серверийн үйлдлийг тохируулах шаардлагатай байна."
+    );
+    return;
+  }
 
-      showMessage("Хүсэлтийн төлөв шинэчлэгдлээ.");
-      await loadRequests();
+  const { error } = await db
+    .from("registration_requests")
+    .update({ status: "rejected" })
+    .eq("id", id)
+    .eq("status", "pending");
+
+  if (error) {
+    showMessage("Алдаа: " + error.message);
+    return;
+  }
+
+  showMessage("Хүсэлтээс татгалзлаа.");
+  await loadRequests();
     }
 
     document.getElementById("loginForm")
@@ -290,8 +299,6 @@
       } else {
         showLoggedIn(false);
       }
-    }
-
     async function loadMembers() {
       const memberMessage = document.getElementById("memberMessage");
       const memberList = document.getElementById("memberList");
