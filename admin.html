@@ -286,17 +286,6 @@ async function updateStatus(id, status) {
     showMessage("Гишүүн зөвшөөрөгдсөн эсэхийг шалгана уу.");
     return;
   }
-
-    if (error) {
-      showMessage("Гишүүн нэмэхэд алдаа гарлаа: " + error.message);
-      return;
-    }
-
-    if (!data?.success) {
-      showMessage("Гишүүн нэмэх үйлдэл амжилтгүй боллоо.");
-      return;
-    }
-
     showMessage("Гишүүн амжилттай бүртгэгдлээ.");
   } else {
     const { error } = await db
