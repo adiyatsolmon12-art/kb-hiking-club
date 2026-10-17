@@ -263,19 +263,16 @@ async function updateStatus(id, status) {
   if (error) {
   let details = error.message;
 
-  if (error.context) {
+  if (error.context instanceof Response) {
     try {
-      const response = await error.context.json();
-      details = JSON.stringify(response);
-    } catch {
-      details = error.message;
+      const responseText = await error.context.clone().text();
+      details += " | Серверийн хариу: " + responseText;
+    } catch (e) {
+      details += " | Хариуг уншиж чадсангүй";
     }
   }
-
   showMessage("Алдааны дэлгэрэнгүй: " + details);
-  return;
-}
-    return;
+  return;  
   }
 
   if (data?.error) {
