@@ -253,10 +253,30 @@ async function updateStatus(id, status) {
   showMessage("Боловсруулж байна...");
 
   if (status === "approved") {
-    const { data, error } = await db.rpc(
-      "approve_registration_request",
-      { p_request_id: id }
+  const { data, error } = await db.functions.invoke(
+    "approve-member",
+    {
+      body: { requestId: id }
+    }
+  );
+
+  if (error) {
+    showMessage("Гишүүн зөвшөөрөхөд алдаа гарлаа: " + error.message);
+    return;
+  }
+
+  if (data?.error) {
+    showMessage(
+      "Гишүүн зөвшөөрөхөд алдаа гарлаа: " +
+      (data.details ? JSON.stringify(data.details) : data.error)
     );
+    return;
+  }
+
+  if (!data?.success) {
+    showMessage("Гишүүн зөвшөөрөгдсөн эсэхийг шалгана уу.");
+    return;
+  }
 
     if (error) {
       showMessage("Гишүүн нэмэхэд алдаа гарлаа: " + error.message);
