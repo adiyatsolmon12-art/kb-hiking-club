@@ -261,12 +261,20 @@ async function updateStatus(id, status) {
   );
 
   if (error) {
-    showMessage(
-  "Алдаа: " +
-  JSON.stringify(error, Object.getOwnPropertyNames(error)) +
-  (data?.details ? " | " + data.details : "") +
-  (data?.error ? " | " + data.error : "")
-);
+  let details = error.message;
+
+  if (error.context) {
+    try {
+      const response = await error.context.json();
+      details = JSON.stringify(response);
+    } catch {
+      details = error.message;
+    }
+  }
+
+  showMessage("Алдааны дэлгэрэнгүй: " + details);
+  return;
+}
     return;
   }
 
