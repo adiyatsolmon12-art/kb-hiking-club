@@ -261,20 +261,20 @@ async function updateStatus(id, status) {
     );
 
     if (error) {
-      let details = error.message;
+  let details = error.message;
 
-      if (error.context instanceof Response) {
-        try {
-          const responseText = await error.context.clone().text();
-          details += " | Серверийн хариу: " + responseText;
-        } catch (e) {
-          details += " | Хариуг уншиж чадсангүй";
-        }
-      }
-
-      showMessage("Алдааны дэлгэрэнгүй: " + details);
-      return;
+  if (error.context instanceof Response) {
+    try {
+      const responseText = await error.context.clone().text();
+      details += " | Серверийн хариу: " + responseText;
+    } catch (e) {
+      details += " | Хариуг уншиж чадсангүй";
     }
+  }
+
+  showMessage("Алдааны дэлгэрэнгүй: " + details);
+  return;
+}
 
     if (data?.error) {
       showMessage(
