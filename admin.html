@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="mn">
 <head>
@@ -241,6 +240,7 @@
         requestList.appendChild(tr);
       });
     }
+
 async function updateStatus(id, status) {
   const action = status === "approved"
     ? "зөвшөөрөх"
@@ -253,39 +253,42 @@ async function updateStatus(id, status) {
   showMessage("Боловсруулж байна...");
 
   if (status === "approved") {
-  const { data, error } = await db.functions.invoke(
-    "approve-member",
-    {
-      body: { requestId: id }
-    }
-  );
-
-  if (error) {
-  let details = error.message;
-
-  if (error.context instanceof Response) {
-    try {
-      const responseText = await error.context.clone().text();
-      details += " | Серверийн хариу: " + responseText;
-    } catch (e) {
-      details += " | Хариуг уншиж чадсангүй";
-    }
-  showMessage("Алдааны дэлгэрэнгүй: " + details);
-  return;  
-  }
-
-  if (data?.error) {
-    showMessage(
-      "Гишүүн зөвшөөрөхөд алдаа гарлаа: " +
-      (data.details ? JSON.stringify(data.details) : data.error)
+    const { data, error } = await db.functions.invoke(
+      "approve-member",
+      {
+        body: { requestId: id }
+      }
     );
-    return;
-  }
 
-  if (!data?.success) {
-    showMessage("Гишүүн зөвшөөрөгдсөн эсэхийг шалгана уу.");
-    return;
-  }
+    if (error) {
+      let details = error.message;
+
+      if (error.context instanceof Response) {
+        try {
+          const responseText = await error.context.clone().text();
+          details += " | Серверийн хариу: " + responseText;
+        } catch (e) {
+          details += " | Хариуг уншиж чадсангүй";
+        }
+      }
+
+      showMessage("Алдааны дэлгэрэнгүй: " + details);
+      return;
+    }
+
+    if (data?.error) {
+      showMessage(
+        "Гишүүн зөвшөөрөхөд алдаа гарлаа: " +
+        (data.details ? JSON.stringify(data.details) : data.error)
+      );
+      return;
+    }
+
+    if (!data?.success) {
+      showMessage("Гишүүн зөвшөөрөгдсөн эсэхийг шалгана уу.");
+      return;
+    }
+
     showMessage("Гишүүн амжилттай бүртгэгдлээ.");
   } else {
     const { error } = await db
@@ -384,7 +387,6 @@ async function updateStatus(id, status) {
 
     document.getElementById("memberSearch")
       .addEventListener("input", loadMembers);
-
     init();
   </script>
 </body>
